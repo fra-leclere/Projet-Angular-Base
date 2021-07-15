@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AppareilService} from "../services/appareil.service";
 import {Subscription} from "rxjs";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-appareil-view',
@@ -9,11 +10,12 @@ import {Subscription} from "rxjs";
 })
 export class AppareilViewComponent implements OnInit {
 
-  isAuth: boolean = false;
+
+  isAuth: boolean = this.authService.isAuth;
   // @ts-ignore
   appareilSubscription: Subscription;
 
-  constructor(private appareilService: AppareilService) { }
+  constructor(private appareilService: AppareilService, private authService: AuthService) { }
 
   appareils: any[] | undefined;
 
@@ -49,6 +51,14 @@ export class AppareilViewComponent implements OnInit {
 
   ngOnDestroy() {
     this.appareilSubscription.unsubscribe();
+  }
+
+  onSave() {
+    this.appareilService.saveAppareilsToServer();
+  }
+
+  onFetch() {
+    this.appareilService.getAppareilsFromServer();
   }
 
 }
